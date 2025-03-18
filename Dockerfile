@@ -1,14 +1,20 @@
-# Usamos una imagen base de Java 17 (cambia la versión si es necesario)
-FROM eclipse-temurin:17-jdk
-
-# Establece el directorio de trabajo dentro del contenedor
+# Imagen base de Maven para compilar
+FROM maven:3.8.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copia el archivo JAR generado al contenedor
-COPY target/*.jar app.jar
+# Copiar archivos del proyecto y compilar
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Expone el puerto en el que corre la app (cambia si usas otro)
+# Imagen final con Java
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
+
+# Copiar el JAR generado desde la imagen anterior
+COPY --from=build /app/target/*.jar app.jar
+
+# Exponer el puerto
 EXPOSE 8080
 
-# Comando para ejecutar la app
+# Ejecutar la aplicación
 CMD ["java", "-jar", "app.jar"]
