@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title>index</title>
+    <meta charset="UTF-8">
+    <title>4 en Raya</title>
 </head>
-
 <body>
-	<h1>Centro IMI</h1>
+    <h1>Centro IMI</h1>
+
+    <div>
+        <form th:each="colIndex : ${#numbers.sequence(0, 6)}" th:action="@{/tirarficha}" method="get">
+            <input type="hidden" name="columna" th:value="${colIndex}" />
+            <button type="submit" th:text="${colIndex}"></button>
+        </form>
+    </div>
+
+    <table border="1">
+        <tbody>
+            <tr th:each="fila: ${arrayInt}">
+                <td th:each="col: ${fila}" th:text="${col}"></td>
+            </tr>
+        </tbody>
+    </table> 
 </body>
 </html>
