@@ -182,7 +182,7 @@ public class Board
 		}
 	}
 	
-	private void callBackJugadaIA()
+	public void callBackJugadaIA()
 	{
 		Timer tiempoRespuestaIA = new Timer(2000, new ActionListener()
 		{

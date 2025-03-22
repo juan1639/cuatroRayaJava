@@ -9,13 +9,16 @@ import com.ejemplo.juan1639.tablero.Board;
 
 @Controller
 public class MiController
-{	
+{
 	private final Board tablero;
+	//private final IAServicio iaServicio;
 	
-    public MiController(Board tablero) {
-        this.tablero = tablero;
-    }
-    
+	public MiController(Board tablero)
+	{
+		this.tablero = tablero;
+		//this.iaServicio = iaServicio;
+	}
+
 	@GetMapping("/index")
 	public String holaMundo(Model model)
 	{
@@ -24,24 +27,28 @@ public class MiController
 		model.addAttribute("turno", tablero.getTurno()); // Enviamos el turno al frontend
 		return "index";
 	}
-	
+
 	@GetMapping("/tirarficha")
 	public String tirarFicha(@RequestParam int columna, Model model)
 	{
-		//Integer[][] arrayInt = tablero.getArrayInt();
 		tablero.ActualizarBoardConNuevaFicha(columna);
 		
-		if (!tablero.getTurno()) { // Si después de la jugada es turno de la IA
-	        return "redirect:/jugadaIA";
-	    }
-		//tablero.setArrayInt(arrayInt);
+		/*
+		 * if (!tablero.getTurno()) { iaServicio.jugarIAAsync(); }
+		 */
+		
+		if (!tablero.getTurno())
+		{
+			return "redirect:/jugadaIA";
+		}
 		
 		return "redirect:/index";
 	}
-	
+
 	@GetMapping("/jugadaIA")
-	public String jugarIA(Model model) {
-	    tablero.ActualizarBoardConNuevaFicha(-999); // Simula la jugada de la IA
-	    return "redirect:/index";
+	public String jugarIA(Model model)
+	{
+		tablero.ActualizarBoardConNuevaFicha(-999); // Simula la jugada de la IA
+		return "redirect:/index";
 	}
 }
